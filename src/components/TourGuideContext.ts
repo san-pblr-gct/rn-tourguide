@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { IStep } from '../types'
+import { ScrollView } from 'react-native'
 
 export type Handler = (event?: any) => void
 export interface Emitter {
@@ -14,7 +15,7 @@ export interface ITourGuideContext {
   registerStep?(step: IStep): void
   unregisterStep?(stepName: string): void
   getCurrentStep?(): IStep | undefined
-  start?(fromStep?: number): void
+  start?(fromStep?: number, scrollView?: React.RefObject<ScrollView>): void
   stop?(): void
 }
 export const TourGuideContext = React.createContext<ITourGuideContext>({

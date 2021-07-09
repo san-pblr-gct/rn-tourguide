@@ -1,6 +1,7 @@
 {
   "include": ["src"],
   "compilerOptions": {
+    "checkJs": false,
     "declaration": true,
     "outDir": "./lib",
     "strict": true,
@@ -10,7 +11,7 @@
     "module": "es6",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "experimentalDecorators": true,
     "preserveConstEnums": true,
     "sourceMap": false,

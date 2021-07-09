@@ -1,6 +1,14 @@
+/* tslint:disable */
 import mitt from 'mitt'
 import * as React from 'react'
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
+import {
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+  findNodeHandle,
+  ScrollView,
+} from 'react-native'
 import { TourGuideContext } from '../components/TourGuideContext'
 import { useIsMounted } from '../hooks/useIsMounted'
 import { IStep, Labels, StepObject, Steps } from '../types'
@@ -50,6 +58,9 @@ export const TourGuideProvider = ({
 }: TourGuideProviderProps) => {
   const [visible, setVisible] = useState<boolean | undefined>(undefined)
   const [currentStep, updateCurrentStep] = useState<IStep | undefined>()
+  const [scrollView, setScrollView] = useState<
+    React.RefObject<ScrollView> | undefined
+  >()
   const [steps, setSteps] = useState<Steps>({})
   const [canStart, setCanStart] = useState<boolean>(false)
 
@@ -68,6 +79,23 @@ export const TourGuideProvider = ({
 
   useEffect(() => {
     if (visible || currentStep) {
+      if (scrollView?.current) {
+        currentStep?.wrapper.measureLayout(
+          findNodeHandle(scrollView?.current),
+          (x, y, w, h) => {
+            console.log(x, y, w, h)
+            const yOffsett = y > 0 ? y - h / 2 : 0
+            scrollView?.current?.scrollTo({ y: yOffsett, animated: false })
+          },
+        )
+      }
+
+      setTimeout(
+        () => {
+          moveToCurrentStep()
+        },
+        scrollView ? 100 : 0,
+      )
       moveToCurrentStep()
     }
   }, [visible, currentStep])
@@ -87,8 +115,13 @@ export const TourGuideProvider = ({
 
   const moveToCurrentStep = async () => {
     const size = await currentStep!.target.measure()
-    if (isNaN(size.width) || isNaN(size.height) || isNaN(size.x) || isNaN(size.y)) {
-      return;
+    if (
+      isNaN(size.width) ||
+      isNaN(size.height) ||
+      isNaN(size.x) ||
+      isNaN(size.y)
+    ) {
+      return
     }
     await modal.current?.animateMove({
       width: size.width + OFFSET_WIDTH,
@@ -117,9 +150,10 @@ export const TourGuideProvider = ({
 
   const getLastStep = () => utils.getLastStep(steps!)
 
-  const isFirstStep = useMemo(() => currentStep === getFirstStep(), [
-    currentStep,
-  ])
+  const isFirstStep = useMemo(
+    () => currentStep === getFirstStep(),
+    [currentStep],
+  )
 
   const isLastStep = useMemo(() => currentStep === getLastStep(), [currentStep])
 
@@ -154,7 +188,11 @@ export const TourGuideProvider = ({
 
   const getCurrentStep = () => currentStep
 
-  const start = async (fromStep?: number) => {
+  const start = async (
+    fromStep?: number,
+    scrollViewRef?: React.RefObject<ScrollView>,
+  ) => {
+    setScrollView(scrollViewRef)
     const currentStep = fromStep
       ? (steps as StepObject)[fromStep]
       : getFirstStep()

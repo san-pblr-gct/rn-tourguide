@@ -18,6 +18,7 @@ import { AnimatedSvgPath } from './AnimatedPath'
 const screenDimensions = Dimensions.get('screen')
 
 interface Props {
+  stop(): void
   size: ValueXY
   position: ValueXY
   style: StyleProp<ViewStyle>
@@ -178,14 +179,37 @@ export class SvgMask extends Component<Props, State> {
       return null
     }
     const { dismissOnPress, stop } = this.props
-    const Wrapper = dismissOnPress ? TouchableWithoutFeedback : View
+
+    if (dismissOnPress) {
+      return (
+        <TouchableWithoutFeedback
+          style={this.props.style}
+          onLayout={this.handleLayout}
+          onPress={stop}
+        >
+          <Svg
+            pointerEvents='none'
+            width={this.state.canvasSize.x}
+            height={this.state.canvasSize.y}
+          >
+            <AnimatedSvgPath
+              ref={this.mask}
+              fill={this.props.backdropColor}
+              strokeWidth={0}
+              fillRule='evenodd'
+              d={FIRST_PATH}
+              opacity={this.state.opacity as any}
+            />
+          </Svg>
+        </TouchableWithoutFeedback>
+      )
+    }
 
     return (
-      <Wrapper
+      <View
         style={this.props.style}
         onLayout={this.handleLayout}
         pointerEvents='none'
-        onPress={dismissOnPress ? stop : undefined}
       >
         <Svg
           pointerEvents='none'
@@ -201,7 +225,7 @@ export class SvgMask extends Component<Props, State> {
             opacity={this.state.opacity as any}
           />
         </Svg>
-      </Wrapper>
+      </View>
     )
   }
 }
