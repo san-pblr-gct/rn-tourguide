@@ -1,9 +1,9 @@
-<h1 align="center">RN-TourGuide</h1>
+<h1 align="center">RN-TourGuide (with support for scrollview)</h1>
 
 <p align="center">
   A flexible <strong>tourguide</strong> for your react native app!
   <br/><small>🎉 Webable 🎉</small>
-  <br/><small>(a rewriting of react-native-copilot)</small>
+  <br/><small>(a rewriting of react-native-copilot and rn-tourguide)</small>
 </p>
 
 <p align="center">
@@ -35,7 +35,7 @@
 ## Installation
 
 ```
-yarn add rn-tourguide
+yarn add rn-tourguide-inc
 ```
 
 ```
@@ -57,7 +57,7 @@ import {
   TourGuideZone, // Main wrapper of highlight component
   TourGuideZoneByPosition, // Component to use mask on overlay (ie, position absolute)
   useTourGuideController, // hook to start, etc.
-} from 'rn-tourguide'
+} from 'rn-tourguide-inc'
 
 // Add <TourGuideProvider/> at the root of you app!
 function App() {
@@ -319,15 +319,3 @@ List of available events is:
 - `stop` — Copilot tutorial has ended or skipped.
 - `stepChange` — Next step is triggered. Passes [`Step`](https://github.com/mohebifar/react-native-copilot/blob/master/src/types.js#L2) instance as event handler argument.
 
-## Contributing
-
-Issues and Pull Requests are always welcome.
-
-## Hire an expert!
-
-Looking for a ReactNative freelance expert with more than 14 years experience? Contact me from my [website](https://xaviercarpentier.com)!
-
-## License
-
-- [MIT](LICENSE) © 2020 Xavier CARPENTIER SAS, https://xaviercarpentier.com.
-- [MIT](LICENSE) © 2017 OK GROW!, https://www.okgrow.com.
