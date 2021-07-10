@@ -3,7 +3,7 @@
 <p align="center">
   A flexible <strong>tourguide</strong> for your react native app!
   <br/><small>🎉 Webable 🎉</small>
-  <br/><small>(a rewriting of react-native-copilot and rn-tourguide)</small>
+  <br/><small>(a rewriting of react-native-copilot and fork of rn-tourguide)</small>
 </p>
 
 <p align="center">
